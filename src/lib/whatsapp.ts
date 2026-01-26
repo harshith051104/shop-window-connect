@@ -1,6 +1,6 @@
 // WhatsApp configuration
 // Update this phone number with your shop's WhatsApp number (with country code, no + or spaces)
-export const WHATSAPP_NUMBER = "919876543210"; // Example: India +91 followed by 10-digit number
+export const WHATSAPP_NUMBER = "919849850425"; // Example: India +91 followed by 10-digit number
 
 export const SHOP_INFO = {
   name: "Nandi Stationery & Gifts",
