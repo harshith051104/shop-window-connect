@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Google Sheets API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .test-section {
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        button {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #357ae8;
+        }
+        pre {
+            background: #fff;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Google Sheets API Test</h1>
+    
+    <div class="test-section">
+        <h2>API Configuration</h2>
+        <p><strong>API URL:</strong> <code id="apiUrl"></code></p>
+        <p id="apiStatus"></p>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 1: Get Categories</h2>
+        <button onclick="testGetCategories()">Test getCategories</button>
+        <div id="categoriesResult"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 2: Get Products (Pens category)</h2>
+        <button onclick="testGetProducts()">Test getProducts</button>
+        <div id="productsResult"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 3: Search Products</h2>
+        <input type="text" id="searchQuery" placeholder="Enter search term..." value="pen">
+        <button onclick="testSearchProducts()">Test Search</button>
+        <div id="searchResult"></div>
+    </div>
+
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxbXpYQBCNltSj5H7czEAqrQuBi3dYI-3UQ79YLIM5T3TwE9lae0EqXUt2RofNhwAP8xg/exec';
+        document.getElementById('apiUrl').textContent = API_URL;
+
+        async function makeRequest(action, params = {}) {
+            const url = new URL(API_URL);
+            url.searchParams.append('action', action);
+            Object.entries(params).forEach(([key, value]) => {
+                url.searchParams.append(key, value);
+            });
+
+            console.log('Request URL:', url.toString());
+
+            try {
+                const response = await fetch(url.toString());
+                const text = await response.text();
+                
+                console.log('Response status:', response.status);
+                console.log('Response text:', text);
+
+                // Check if response is HTML (login page)
+                if (text.includes('<!doctype html') || text.includes('<html')) {
+                    throw new Error('API returned HTML (login page). Web App needs to be deployed with "Anyone" access.');
+                }
+
+                const data = JSON.parse(text);
+                return { success: true, data };
+            } catch (error) {
+                console.error('Error:', error);
+                return { success: false, error: error.message };
+            }
+        }
+
+        async function testGetCategories() {
+            const resultDiv = document.getElementById('categoriesResult');
+            resultDiv.innerHTML = '<p>Testing...</p>';
+
+            const result = await makeRequest('getCategories');
+
+            if (result.success) {
+                resultDiv.innerHTML = `
+                    <div class="status success">
+                        <strong>✅ SUCCESS</strong><br>
+                        Found ${result.data.length} categories
+                    </div>
+                    <pre>${JSON.stringify(result.data, null, 2)}</pre>
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="status error">
+                        <strong>❌ ERROR</strong><br>
+                        ${result.error}
+                    </div>
+                    <h3>Troubleshooting Steps:</h3>
+                    <ol>
+                        <li>Go to your Google Apps Script editor</li>
+                        <li>Click <strong>Deploy</strong> → <strong>Manage deployments</strong></li>
+                        <li>Click the edit icon (pencil) on your deployment</li>
+                        <li>Under "Who has access", select <strong>"Anyone"</strong></li>
+                        <li>Click <strong>Deploy</strong></li>
+                        <li>Refresh this page and try again</li>
+                    </ol>
+                `;
+            }
+        }
+
+        async function testGetProducts() {
+            const resultDiv = document.getElementById('productsResult');
+            resultDiv.innerHTML = '<p>Testing...</p>';
+
+            const result = await makeRequest('getProducts', {
+                category: 'pens',
+                page: 1,
+                limit: 10
+            });
+
+            if (result.success) {
+                resultDiv.innerHTML = `
+                    <div class="status success">
+                        <strong>✅ SUCCESS</strong><br>
+                        Found ${result.data.totalItems} total products<br>
+                        Showing ${result.data.data.length} items (page ${result.data.currentPage} of ${result.data.totalPages})
+                    </div>
+                    <pre>${JSON.stringify(result.data, null, 2)}</pre>
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="status error">
+                        <strong>❌ ERROR</strong><br>
+                        ${result.error}
+                    </div>
+                `;
+            }
+        }
+
+        async function testSearchProducts() {
+            const searchQuery = document.getElementById('searchQuery').value;
+            const resultDiv = document.getElementById('searchResult');
+            resultDiv.innerHTML = '<p>Testing...</p>';
+
+            const result = await makeRequest('getProducts', {
+                category: 'pens',
+                page: 1,
+                limit: 10,
+                search: searchQuery
+            });
+
+            if (result.success) {
+                resultDiv.innerHTML = `
+                    <div class="status success">
+                        <strong>✅ SUCCESS</strong><br>
+                        Search: "${searchQuery}"<br>
+                        Found ${result.data.totalItems} matching products
+                    </div>
+                    <pre>${JSON.stringify(result.data, null, 2)}</pre>
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="status error">
+                        <strong>❌ ERROR</strong><br>
+                        ${result.error}
+                    </div>
+                `;
+            }
+        }
+
+        // Auto-test on load
+        window.onload = () => {
+            document.getElementById('apiStatus').innerHTML = '<em>Click buttons above to test API endpoints</em>';
+        };
+    </script>
+</body>
+</html>

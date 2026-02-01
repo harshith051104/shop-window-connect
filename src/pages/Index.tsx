@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
+import GlobalSearch from "@/components/GlobalSearch";
 import ProductsSection from "@/components/ProductsSection";
 import GiftsSection from "@/components/GiftsSection";
 import RequestItemSection from "@/components/RequestItemSection";
@@ -13,6 +14,13 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1">
+        {/* Global Search */}
+        <section className="py-4 bg-background">
+          <div className="container">
+            <GlobalSearch />
+          </div>
+        </section>
+        
         <Hero />
         <ProductsSection />
         <GiftsSection />

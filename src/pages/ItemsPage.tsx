@@ -1,15 +1,59 @@
-import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { ArrowRight, Loader2, AlertCircle } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import OptimizedImage from "@/components/OptimizedImage";
 import FloatingCartButton from "@/components/FloatingCartButton";
-import { categories } from "@/data/products";
+import { fetchCategories, fetchProducts, type Category, type ProductItem } from "@/services/sheetsApi";
 import { useTranslation, useLanguage } from "@/hooks/useLanguage";
+import ItemCard from "@/components/ItemCard";
 
 const ItemsPage = () => {
   const { t } = useTranslation();
   const { language } = useLanguage();
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get('search');
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [products, setProducts] = useState<ProductItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (searchQuery) {
+      loadSearchResults();
+    } else {
+      loadCategories();
+    }
+  }, [searchQuery]);
+
+  async function loadCategories() {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await fetchCategories();
+      setCategories(data);
+    } catch (err) {
+      console.error('Error loading categories:', err);
+      setError('Failed to load categories. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function loadSearchResults() {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await fetchProducts("", 1, 100, searchQuery || "");
+      setProducts(response.data);
+    } catch (err) {
+      console.error('Error loading search results:', err);
+      setError('Failed to load search results. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -23,12 +67,14 @@ const ItemsPage = () => {
               📦 {t("ourProducts")}
             </span>
             <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">
-              {t("browseCategories")}
+              {searchQuery ? `Search Results for "${searchQuery}"` : t("browseCategories")}
             </h1>
             <p className="text-muted-foreground max-w-lg mx-auto">
-              {language === "te" 
-                ? "మా పూర్తి స్టేషనరీ వస్తువుల సేకరణను బ్రౌజ్ చేయండి. అందుబాటులో ఉన్న అన్ని ఉత్పత్తులను చూడటానికి వర్గంపై క్లిక్ చేయండి."
-                : "Browse our complete collection of stationery items. Click on a category to see all available products."}
+              {searchQuery 
+                ? `Found ${products.length} product${products.length !== 1 ? 's' : ''} matching "${searchQuery}"`
+                : (language === "te" 
+                  ? "మా పూర్తి స్టేషనరీ వస్తువుల సేకరణను బ్రౌజ్ చేయండి. అందుబాటులో ఉన్న అన్ని ఉత్పత్తులను చూడటానికి వర్గంపై క్లిక్ చేయండి."
+                  : "Browse our complete collection of stationery items. Click on a category to see all available products.")}
             </p>
           </div>
         </section>
@@ -36,8 +82,55 @@ const ItemsPage = () => {
         {/* Categories Grid */}
         <section className="py-6 sm:py-8 md:py-12">
           <div className="container">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
-              {categories.map((category) => (
+            {/* Loading State */}
+            {loading && (
+              <div className="flex items-center justify-center py-20">
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                <span className="ml-3 text-muted-foreground">Loading categories...</span>
+              </div>
+            )}
+
+            {/* Error State */}
+            {error && (
+              <div className="max-w-md mx-auto bg-destructive/10 border border-destructive/20 rounded-lg p-6 text-center">
+                <AlertCircle className="w-12 h-12 mx-auto mb-3 text-destructive" />
+                <p className="text-destructive font-medium mb-4">{error}</p>
+                <button
+                  onClick={searchQuery ? loadSearchResults : loadCategories}
+                  className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+                >
+                  Retry
+                </button>
+              </div>
+            )}
+
+            {/* Search Results */}
+            {!loading && !error && searchQuery && (
+              <div>
+                {products.length > 0 ? (
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5">
+                    {products.map((product) => (
+                      <ItemCard key={product.id} item={product} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <p className="text-muted-foreground text-lg mb-4">No products found matching "{searchQuery}"</p>
+                    <Link
+                      to="/items"
+                      className="inline-flex items-center text-primary hover:underline"
+                    >
+                      Browse all categories
+                    </Link>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Categories */}
+            {!loading && !error && !searchQuery && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
+                {categories.map((category) => (
                 <Link
                   key={category.id}
                   to={`/category/${category.slug}`}
@@ -73,7 +166,8 @@ const ItemsPage = () => {
                   </div>
                 </Link>
               ))}
-            </div>
+              </div>
+            )}
           </div>
         </section>
 

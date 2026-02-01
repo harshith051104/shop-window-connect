@@ -19,19 +19,23 @@ export function CartProvider({ children }: { children: ReactNode }) {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
   }, [items]);
 
-  const addItem = (newItem: Omit<CartItem, "quantity">) => {
+  const addItem = (newItem: Omit<CartItem, "quantity"> & { quantity?: number }) => {
     setItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.id === newItem.id);
+      const itemKey = `${newItem.id}-${newItem.color || 'default'}`;
+      const existingItem = prevItems.find(
+        (item) => item.id === newItem.id && item.color === newItem.color
+      );
+      
       if (existingItem) {
-        // Increase quantity if item already exists
+        // Increase quantity if item with same color already exists
         return prevItems.map((item) =>
-          item.id === newItem.id
-            ? { ...item, quantity: item.quantity + 1 }
+          item.id === newItem.id && item.color === newItem.color
+            ? { ...item, quantity: item.quantity + (newItem.quantity || 1) }
             : item
         );
       }
-      // Add new item with quantity 1
-      return [...prevItems, { ...newItem, quantity: 1 }];
+      // Add new item with specified quantity or default to 1
+      return [...prevItems, { ...newItem, quantity: newItem.quantity || 1 }];
     });
   };
 
@@ -63,7 +67,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     if (items.length === 0) return "";
 
     const itemsList = items
-      .map((item) => `• ${item.name} - Qty: ${item.quantity}`)
+      .map((item) => {
+        const colorText = item.color ? ` (${item.color})` : '';
+        return `• ${item.name}${colorText} - Qty: ${item.quantity}`;
+      })
       .join("\n");
 
     return `🛒 *Order from Nandi Stationery*\n\n*Items:*\n${itemsList}\n\n📦 *Total Items:* ${getTotalItems()}\n\n✅ Please confirm availability and total price.\n\n🏪 I will pick up from shop.`;

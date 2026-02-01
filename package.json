@@ -12,7 +12,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "images:optimize": "node scripts/optimize-images.js",
-    "images:placeholder": "node scripts/create-placeholder.js"
+    "images:placeholder": "node scripts/create-placeholder.js",
+    "export-sheets": "tsx scripts/export-to-csv.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -44,6 +45,8 @@
     "@radix-ui/react-toggle-group": "^1.1.10",
     "@radix-ui/react-tooltip": "^1.2.7",
     "@tanstack/react-query": "^5.83.0",
+    "browserslist": "^4.28.1",
+    "caniuse-lite": "^1.0.30001766",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -84,6 +87,7 @@
     "postcss": "^8.5.6",
     "sharp": "^0.34.5",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.21.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",
     "vite": "^5.4.19",

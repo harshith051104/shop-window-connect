@@ -84,9 +84,9 @@ const CartPage = () => {
             <div className="grid lg:grid-cols-3 gap-6">
               {/* Items List */}
               <div className="lg:col-span-2 space-y-4">
-                {items.map((item) => (
+                {items.map((item, index) => (
                   <div
-                    key={item.id}
+                    key={`${item.id}-${item.color || 'default'}-${index}`}
                     className="bg-card rounded-xl border border-border p-4 flex gap-4"
                   >
                     {/* Image */}
@@ -103,6 +103,11 @@ const CartPage = () => {
                       <h3 className="font-semibold text-foreground mb-1 line-clamp-2">
                         {item.name}
                       </h3>
+                      {item.color && (
+                        <p className="text-xs text-muted-foreground mb-1">
+                          {language === "te" ? "రంగు" : "Color"}: {item.color}
+                        </p>
+                      )}
                       <p className="text-primary font-bold mb-3">{item.price}</p>
 
                       {/* Quantity Controls */}

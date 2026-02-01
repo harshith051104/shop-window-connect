@@ -6,6 +6,7 @@ export interface ProductItem {
   image: string;
   category: string;
   inStock?: boolean;
+  colors?: string[];
 }
 
 export interface Category {
@@ -25,7 +26,7 @@ export const categories: Category[] = [
     slug: "pens-pencils",
     description: "Quality writing instruments for school, college & office",
     image: "/images/products/pens/featured.webp",
-    itemCount: 24,
+    itemCount: 48,
   },
   {
     id: "notebooks",
@@ -41,7 +42,7 @@ export const categories: Category[] = [
     slug: "art-drawing",
     description: "Colors, paints, and creative supplies",
     image: "/images/products/art-craft/featured.webp",
-    itemCount: 20,
+    itemCount: 29,
   },
   {
     id: "school-essentials",
@@ -72,30 +73,112 @@ export const categories: Category[] = [
 // Individual products for each category
 export const productItems: Record<string, ProductItem[]> = {
   "pens-pencils": [
-    { id: "pen-001", name: "Cello Pinpoint Ball Pen (Blue)", price: "₹10", image: "/images/products/pens/ballpen-blue.webp", category: "pens-pencils" },
-    { id: "pen-002", name: "Cello Pinpoint Ball Pen (Black)", price: "₹10", image: "/images/products/pens/ballpen-black.webp", category: "pens-pencils" },
-    { id: "pen-003", name: "Reynolds 045 Fine (Blue)", price: "₹8", image: "/images/products/pens/reynolds-blue.webp", category: "pens-pencils" },
-    { id: "pen-004", name: "Reynolds 045 Fine (Black)", price: "₹8", image: "/images/products/pens/reynolds-black.webp", category: "pens-pencils" },
-    { id: "pen-005", name: "Gel Pen - Pilot V5", price: "₹40", image: "/images/products/pens/gel-pilot.webp", category: "pens-pencils" },
-    { id: "pen-006", name: "Gel Pen - Cello Geltech", price: "₹20", image: "/images/products/pens/gel-cello.webp", category: "pens-pencils" },
-    { id: "pen-007", name: "Natraj Pencil HB (Pack of 10)", price: "₹30", image: "/images/products/pens/natraj-pencil.webp", category: "pens-pencils" },
-    { id: "pen-008", name: "Apsara Pencil (Pack of 10)", price: "₹35", image: "/images/products/pens/apsara-pencil.webp", category: "pens-pencils" },
-    { id: "pen-009", name: "Mechanical Pencil 0.5mm", price: "₹25", image: "/images/products/pens/mechanical-pencil.webp", category: "pens-pencils" },
-    { id: "pen-010", name: "Mechanical Pencil 0.7mm", price: "₹30", image: "/images/products/pens/mechanical-07.webp", category: "pens-pencils" },
-    { id: "pen-011", name: "Sketch Pens (12 colors)", price: "₹40", image: "/images/products/pens/sketch-12.webp", category: "pens-pencils" },
-    { id: "pen-012", name: "Sketch Pens (24 colors)", price: "₹75", image: "/images/products/pens/sketch-24.webp", category: "pens-pencils" },
-    { id: "pen-013", name: "Highlighter Set (5 colors)", price: "₹60", image: "/images/products/pens/highlighter-set.webp", category: "pens-pencils" },
-    { id: "pen-014", name: "Highlighter Single", price: "₹15", image: "/images/products/pens/highlighter-single.webp", category: "pens-pencils" },
-    { id: "pen-015", name: "Permanent Marker (Black)", price: "₹25", image: "/images/products/pens/marker-black.webp", category: "pens-pencils" },
-    { id: "pen-016", name: "Whiteboard Marker Set", price: "₹80", image: "/images/products/pens/whiteboard-marker.webp", category: "pens-pencils" },
-    { id: "pen-017", name: "Fountain Pen - Hero", price: "₹50", image: "/images/products/pens/fountain-hero.webp", category: "pens-pencils" },
-    { id: "pen-018", name: "Fountain Pen - Parker", price: "₹150", image: "/images/products/pens/fountain-parker.webp", category: "pens-pencils" },
-    { id: "pen-019", name: "Ink Bottle - Blue", price: "₹20", image: "/images/products/pens/ink-blue.webp", category: "pens-pencils" },
-    { id: "pen-020", name: "Ink Bottle - Black", price: "₹20", image: "/images/products/pens/ink-black.webp", category: "pens-pencils" },
-    { id: "pen-021", name: "Lead Refills 0.5mm (Pack)", price: "₹15", image: "/images/products/pens/lead-refill.webp", category: "pens-pencils" },
-    { id: "pen-022", name: "Pen Stand - Plastic", price: "₹35", image: "/images/products/pens/pen-stand.webp", category: "pens-pencils" },
-    { id: "pen-023", name: "Pen Gift Set", price: "₹120", image: "/images/products/pens/pen-gift-set.webp", category: "pens-pencils" },
-    { id: "pen-024", name: "Multi-color Pen (4 in 1)", price: "₹30", image: "/images/products/pens/multicolor-pen.webp", category: "pens-pencils" },
+    // ₹4 Pens
+    { id: "pen-001", name: "S. S. Prime", price: "₹4", image: "https://m.media-amazon.com/images/I/41B0pYZc4XL._SX300_SY300_QL70_FMwebp_.jpg", category: "pens-pencils", colors: ["Blue", "Black"] },
+    { id: "pen-002", name: "S. S. Sparx", price: "₹4", image: "https://m.media-amazon.com/images/I/41B0pYZc4XL._SX300_SY300_QL70_FMwebp_.jpg", category: "pens-pencils", colors: ["Blue", "Black"] },
+    { id: "pen-003", name: "Agni 4G Pro", price: "₹4", image: "https://m.media-amazon.com/images/I/41B0pYZc4XL._SX300_SY300_QL70_FMwebp_.jpg", category: "pens-pencils", colors: ["Blue", "Black"] },
+    { id: "pen-004", name: "S. S. Extra Dark", price: "₹4", image: "https://m.media-amazon.com/images/I/41B0pYZc4XL._SX300_SY300_QL70_FMwebp_.jpg", category: "pens-pencils", colors: ["Blue", "Black"] },
+    
+    // ₹5 Pens
+    { id: "pen-005", name: "Totem Meow", price: "₹5", image: "https://m.media-amazon.com/images/I/71E+vqWXJEL._SX522_.jpg", category: "pens-pencils", colors: ["Blue", "Black"] },
+    { id: "pen-006", name: "S. S. Butterfly", price: "₹5", image: "https://m.media-amazon.com/images/I/41B0pYZc4XL._SX300_SY300_QL70_FMwebp_.jpg", category: "pens-pencils", colors: ["Blue", "Black"] },
+    { id: "pen-007", name: "S. S. Butterfly Glow", price: "₹5", image: "https://m.media-amazon.com/images/I/41B0pYZc4XL._SX300_SY300_QL70_FMwebp_.jpg", category: "pens-pencils", colors: ["Blue", "Black"] },
+    { id: "pen-008", name: "Doms INXTRA Classy", price: "₹5", image: "https://m.media-amazon.com/images/I/61W8zKKZqDL._SX522_.jpg", category: "pens-pencils", colors: ["Blue", "Black"] },
+    { id: "pen-009", name: "S. S. Arrow", price: "₹5", image: "https://m.media-amazon.com/images/I/41B0pYZc4XL._SX300_SY300_QL70_FMwebp_.jpg", category: "pens-pencils", colors: ["Blue", "Black"] },
+    
+    // ₹7 Pens
+    { id: "pen-010", name: "Flair Ezee Click", price: "₹7", image: "https://m.media-amazon.com/images/I/61gHzKXGi+L._SX522_.jpg", category: "pens-pencils", colors: ["Blue", "Black"] },
+    
+    // ₹10 Ball Pens
+    { id: "pen-011", name: "Cello Techno Tip", price: "₹10", image: "https://m.media-amazon.com/images/I/61KmDnz8YML._SX522_.jpg", category: "pens-pencils", colors: ["Blue", "Black", "Red"] },
+    { id: "pen-012", name: "Cello Gripper", price: "₹10", image: "https://m.media-amazon.com/images/I/61hPjDyZOeL._SX522_.jpg", category: "pens-pencils", colors: ["Blue", "Black", "Red"] },
+    { id: "pen-013", name: "Cello Butterflow", price: "₹10", image: "https://m.media-amazon.com/images/I/61tXQjWN4TL._SX522_.jpg", category: "pens-pencils", colors: ["Blue", "Black", "Red"] },
+    { id: "pen-014", name: "Flair Silkina", price: "₹10", image: "https://m.media-amazon.com/images/I/61gHzKXGi+L._SX522_.jpg", category: "pens-pencils", colors: ["Blue", "Black"] },
+    { id: "pen-015", name: "Hauser XO", price: "₹10", image: "https://m.media-amazon.com/images/I/61NzFJ6F7YL._SX522_.jpg", category: "pens-pencils", colors: ["Blue", "Black"] },
+    { id: "pen-016", name: "Hauser XO Glow", price: "₹10", image: "https://m.media-amazon.com/images/I/61NzFJ6F7YL._SX522_.jpg", category: "pens-pencils", colors: ["Blue", "Black"] },
+    { id: "pen-017", name: "Hauser C-Thru", price: "₹10", image: "https://m.media-amazon.com/images/I/51qY1Z6LXML._SX522_.jpg", category: "pens-pencils", colors: ["Blue", "Black"] },
+    { id: "pen-018", name: "Montex Mega Top", price: "₹10", image: "https://m.media-amazon.com/images/I/71QyHkJ0bJL._SX522_.jpg", category: "pens-pencils", colors: ["Blue", "Black"] },
+    { id: "pen-019", name: "Montex SmoothFlow", price: "₹10", image: "https://m.media-amazon.com/images/I/71QyHkJ0bJL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-020", name: "Linc Pentonic", price: "₹10", image: "https://m.media-amazon.com/images/I/61wX7GkKBrL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-021", name: "Win Guide", price: "₹10", image: "https://m.media-amazon.com/images/I/61B0pYZc4XL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-022", name: "UNOMAX Boldtron 2x", price: "₹10", image: "https://m.media-amazon.com/images/I/71xzVJ6LXML._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-023", name: "Montex Impression Gold", price: "₹10", image: "https://m.media-amazon.com/images/I/71QyHkJ0bJL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-024", name: "Montex Gold Touch", price: "₹10", image: "https://m.media-amazon.com/images/I/71QyHkJ0bJL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-025", name: "Montex Copper Touch", price: "₹10", image: "https://m.media-amazon.com/images/I/71QyHkJ0bJL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-026", name: "Montex Silver Touch", price: "₹10", image: "https://m.media-amazon.com/images/I/71QyHkJ0bJL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-027", name: "UNOMAX X-Line", price: "₹10", image: "https://m.media-amazon.com/images/I/61xzVJ6LXML._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-028", name: "Classmate Octane", price: "₹10", image: "https://m.media-amazon.com/images/I/61gPjDyZOeL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-029", name: "Flair Woody", price: "₹10", image: "https://m.media-amazon.com/images/I/61gHzKXGi+L._SX522_.jpg", category: "pens-pencils" },
+    
+    // ₹10 Gel Pens
+    { id: "pen-030", name: "Classmate Octane Gel", price: "₹10", image: "https://m.media-amazon.com/images/I/61gPjDyZOeL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-031", name: "UNOMAX Geltron", price: "₹10", image: "https://m.media-amazon.com/images/I/61xzVJ6LXML._SX522_.jpg", category: "pens-pencils" },
+    
+    // ₹15 Pens
+    { id: "pen-032", name: "Rorito FANTA FLO", price: "₹15", image: "https://m.media-amazon.com/images/I/71m8zKKZqDL._SX522_.jpg", category: "pens-pencils" },
+    
+    // ₹20 Ball Pens
+    { id: "pen-033", name: "Cello PaperSoft", price: "₹20", image: "https://m.media-amazon.com/images/I/61KmDnz8YML._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-034", name: "Cello Power", price: "₹20", image: "https://m.media-amazon.com/images/I/61tXQjWN4TL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-035", name: "Hauser Gravity", price: "₹20", image: "https://m.media-amazon.com/images/I/61NzFJ6F7YL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-036", name: "Hauser BENZO", price: "₹20", image: "https://m.media-amazon.com/images/I/51qY1Z6LXML._SX522_.jpg", category: "pens-pencils" },
+    
+    // ₹20 Gel Pens
+    { id: "pen-037", name: "Linc Executive Gel", price: "₹20", image: "https://m.media-amazon.com/images/I/61wX7GkKBrL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-038", name: "Hauser ICONIQ Gel", price: "₹20", image: "https://m.media-amazon.com/images/I/61NzFJ6F7YL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-039", name: "Hauser Float Gel", price: "₹20", image: "https://m.media-amazon.com/images/I/51qY1Z6LXML._SX522_.jpg", category: "pens-pencils" },
+    
+    // ₹25-80 Premium Pens
+    { id: "pen-040", name: "Rorito Jottek Classic", price: "₹25", image: "https://m.media-amazon.com/images/I/71m8zKKZqDL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-041", name: "Reynolds Jetter Aerosoft", price: "₹30", image: "https://m.media-amazon.com/images/I/61kVJ6LXML._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-042", name: "Rorito Jottek Feathersoft", price: "₹30", image: "https://m.media-amazon.com/images/I/71m8zKKZqDL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-043", name: "Pentel EnerGel", price: "₹40", image: "https://m.media-amazon.com/images/I/71vqWXJEL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-044", name: "ADDGel ACHIEVER", price: "₹50", image: "https://m.media-amazon.com/images/I/61xzVJ6LXML._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-045", name: "Reynolds TRIMAX", price: "₹60", image: "https://m.media-amazon.com/images/I/61kVJ6LXML._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-046", name: "PILOT Hi-TechPoint O5", price: "₹60", image: "https://m.media-amazon.com/images/I/61qY1Z6LXML._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-047", name: "PILOT Hi-TechPoint V7", price: "₹60", image: "https://m.media-amazon.com/images/I/61qY1Z6LXML._SX522_.jpg", category: "pens-pencils" },
+    { id: "pen-048", name: "uni-ball eye fine", price: "₹80", image: "https://m.media-amazon.com/images/I/71E+vqWXJEL._SX522_.jpg", category: "pens-pencils" },
+    
+    // Pencils
+    { id: "pencil-001", name: "Apsara MATTMAGIC 2.0 (Single)", price: "₹7", image: "https://m.media-amazon.com/images/I/61zXJ8LXML._SX522_.jpg", category: "pens-pencils" },
+    { id: "pencil-002", name: "Apsara MATTMAGIC 2.0 (Pack of 10)", price: "₹65", image: "https://m.media-amazon.com/images/I/61zXJ8LXML._SX522_.jpg", category: "pens-pencils" },
+    { id: "pencil-003", name: "Apsara Platinum (Single)", price: "₹6", image: "https://m.media-amazon.com/images/I/71KmDnz8YML._SX522_.jpg", category: "pens-pencils" },
+    { id: "pencil-004", name: "Apsara Platinum (Pack of 10)", price: "₹55", image: "https://m.media-amazon.com/images/I/71KmDnz8YML._SX522_.jpg", category: "pens-pencils" },
+    { id: "pencil-005", name: "Natraj 621 (Single)", price: "₹6", image: "https://m.media-amazon.com/images/I/61hPjDyZOeL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pencil-006", name: "Natraj 621 (Pack of 10)", price: "₹55", image: "https://m.media-amazon.com/images/I/61hPjDyZOeL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pencil-007", name: "DOMS Neon (Single)", price: "₹6", image: "https://m.media-amazon.com/images/I/61W8zKKZqDL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pencil-008", name: "DOMS Neon (Pack of 10)", price: "₹55", image: "https://m.media-amazon.com/images/I/61W8zKKZqDL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pencil-009", name: "DOMS X1 (Single)", price: "₹6", image: "https://m.media-amazon.com/images/I/61W8zKKZqDL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pencil-010", name: "DOMS X1 (Pack of 10)", price: "₹55", image: "https://m.media-amazon.com/images/I/61W8zKKZqDL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pencil-011", name: "DOMS Zillion (Single)", price: "₹6", image: "https://m.media-amazon.com/images/I/61W8zKKZqDL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pencil-012", name: "DOMS Zillion (Pack of 10)", price: "₹55", image: "https://m.media-amazon.com/images/I/61W8zKKZqDL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pencil-013", name: "youVA QUIP (Single)", price: "₹6", image: "https://m.media-amazon.com/images/I/71QyHkJ0bJL._SX522_.jpg", category: "pens-pencils" },
+    { id: "pencil-014", name: "youVA QUIP (Pack of 10)", price: "₹55", image: "https://m.media-amazon.com/images/I/71QyHkJ0bJL._SX522_.jpg", category: "pens-pencils" },
+    
+    // Erasers
+    { id: "eraser-001", name: "Apsara Non Dust", price: "₹3", image: "https://m.media-amazon.com/images/I/61zXJ8LXML._SX522_.jpg", category: "pens-pencils" },
+    { id: "eraser-002", name: "Apsara Non Dust Long", price: "₹5", image: "https://m.media-amazon.com/images/I/61zXJ8LXML._SX522_.jpg", category: "pens-pencils" },
+    { id: "eraser-003", name: "Apsara Disney", price: "₹5", image: "https://m.media-amazon.com/images/I/71KmDnz8YML._SX522_.jpg", category: "pens-pencils" },
+    { id: "eraser-004", name: "Apsara Marvel", price: "₹5", image: "https://m.media-amazon.com/images/I/71KmDnz8YML._SX522_.jpg", category: "pens-pencils" },
+    { id: "eraser-005", name: "Natraj 621 Plasto", price: "₹18", image: "https://m.media-amazon.com/images/I/61hPjDyZOeL._SX522_.jpg", category: "pens-pencils" },
+    { id: "eraser-006", name: "Natraj Smiley", price: "₹20", image: "https://m.media-amazon.com/images/I/61hPjDyZOeL._SX522_.jpg", category: "pens-pencils" },
+    { id: "eraser-007", name: "DOMS Eraser", price: "₹3", image: "https://m.media-amazon.com/images/I/61W8zKKZqDL._SX522_.jpg", category: "pens-pencils" },
+    { id: "eraser-008", name: "DOMS Extra Long", price: "₹5", image: "https://m.media-amazon.com/images/I/61W8zKKZqDL._SX522_.jpg", category: "pens-pencils" },
+    { id: "eraser-009", name: "DOMS CUBO", price: "₹5", image: "https://m.media-amazon.com/images/I/61W8zKKZqDL._SX522_.jpg", category: "pens-pencils" },
+    { id: "eraser-010", name: "DOMS E-RACER", price: "₹10", image: "https://m.media-amazon.com/images/I/61W8zKKZqDL._SX522_.jpg", category: "pens-pencils" },
+    
+    // Sharpeners
+    { id: "sharpener-001", name: "Apsara Sharpener", price: "₹5", image: "https://m.media-amazon.com/images/I/61zXJ8LXML._SX522_.jpg", category: "pens-pencils" },
+    { id: "sharpener-002", name: "Natraj Sharpener", price: "₹5", image: "https://m.media-amazon.com/images/I/61hPjDyZOeL._SX522_.jpg", category: "pens-pencils" },
+    { id: "sharpener-003", name: "DOMS Sharpener", price: "₹5", image: "https://m.media-amazon.com/images/I/61W8zKKZqDL._SX522_.jpg", category: "pens-pencils" },
+    
+    // Scales
+    { id: "scale-001", name: "Scale 15cm", price: "₹5", image: "https://m.media-amazon.com/images/I/61KmDnz8YML._SX522_.jpg", category: "pens-pencils" },
+    { id: "scale-002", name: "Scale 30cm", price: "₹10", image: "https://m.media-amazon.com/images/I/61KmDnz8YML._SX522_.jpg", category: "pens-pencils" },
+    { id: "scale-003", name: "Iron Scale (Small)", price: "₹70", image: "https://m.media-amazon.com/images/I/71QyHkJ0bJL._SX522_.jpg", category: "pens-pencils" },
+    { id: "scale-004", name: "Iron Scale (Large)", price: "₹90", image: "https://m.media-amazon.com/images/I/71QyHkJ0bJL._SX522_.jpg", category: "pens-pencils" },
+    { id: "scale-005", name: "Wooden Scale", price: "₹15", image: "https://m.media-amazon.com/images/I/61hPjDyZOeL._SX522_.jpg", category: "pens-pencils" },
+    { id: "scale-006", name: "Puzzle Scale", price: "₹25", image: "https://m.media-amazon.com/images/I/71KmDnz8YML._SX522_.jpg", category: "pens-pencils" },
   ],
   "notebooks": [
     { id: "nb-001", name: "Single Line Notebook (100 pages)", price: "₹25", image: "/images/products/notebooks/single-100.webp", category: "notebooks" },
@@ -118,26 +201,42 @@ export const productItems: Record<string, ProductItem[]> = {
     { id: "nb-018", name: "Scrapbook", price: "₹40", image: "/images/products/notebooks/scrapbook.webp", category: "notebooks" },
   ],
   "art-drawing": [
-    { id: "art-001", name: "Camlin Color Pencils (12)", price: "₹45", image: "/images/products/art-craft/color-pencils-12.webp", category: "art-drawing" },
-    { id: "art-002", name: "Camlin Color Pencils (24)", price: "₹85", image: "/images/products/art-craft/color-pencils-24.webp", category: "art-drawing" },
-    { id: "art-003", name: "Doms Color Pencils (12)", price: "₹40", image: "/images/products/art-craft/doms-color-12.webp", category: "art-drawing" },
-    { id: "art-004", name: "Crayons - Camel (12)", price: "₹30", image: "/images/products/art-craft/crayons-12.webp", category: "art-drawing" },
-    { id: "art-005", name: "Crayons - Camel (24)", price: "₹55", image: "/images/products/art-craft/crayons-24.webp", category: "art-drawing" },
-    { id: "art-006", name: "Wax Crayons Jumbo", price: "₹40", image: "/images/products/art-craft/wax-jumbo.webp", category: "art-drawing" },
-    { id: "art-007", name: "Oil Pastels (12)", price: "₹50", image: "/images/products/art-craft/oil-pastel-12.webp", category: "art-drawing" },
-    { id: "art-008", name: "Oil Pastels (24)", price: "₹90", image: "/images/products/art-craft/oil-pastel-24.webp", category: "art-drawing" },
-    { id: "art-009", name: "Water Colors (12)", price: "₹35", image: "/images/products/art-craft/watercolor-12.webp", category: "art-drawing" },
-    { id: "art-010", name: "Poster Colors (6)", price: "₹60", image: "/images/products/art-craft/poster-6.webp", category: "art-drawing" },
-    { id: "art-011", name: "Acrylic Colors Set", price: "₹150", image: "/images/products/art-craft/acrylic-set.webp", category: "art-drawing" },
-    { id: "art-012", name: "Paint Brushes (Set of 7)", price: "₹45", image: "/images/products/art-craft/brushes-set.webp", category: "art-drawing" },
-    { id: "art-013", name: "Color Mixing Palette", price: "₹20", image: "/images/products/art-craft/palette.webp", category: "art-drawing" },
-    { id: "art-014", name: "Canvas Board (Small)", price: "₹40", image: "/images/products/art-craft/canvas-small.webp", category: "art-drawing" },
-    { id: "art-015", name: "Canvas Board (Medium)", price: "₹70", image: "/images/products/art-craft/canvas-medium.webp", category: "art-drawing" },
-    { id: "art-016", name: "Craft Paper (Pack of 20)", price: "₹30", image: "/images/products/art-craft/craft-paper.webp", category: "art-drawing" },
-    { id: "art-017", name: "Glitter Sheets (10 colors)", price: "₹50", image: "/images/products/art-craft/glitter-sheets.webp", category: "art-drawing" },
-    { id: "art-018", name: "Chart Paper (Pack of 5)", price: "₹25", image: "/images/products/art-craft/chart-paper.webp", category: "art-drawing" },
-    { id: "art-019", name: "Origami Paper (100 sheets)", price: "₹35", image: "/images/products/art-craft/origami.webp", category: "art-drawing" },
-    { id: "art-020", name: "Craft Scissors (Decorative)", price: "₹60", image: "/images/products/art-craft/craft-scissors.webp", category: "art-drawing" },
+    // Color Pencils
+    { id: "art-001", name: "DOMS Color Pencils (12) Small", price: "₹30", image: "/images/products/art-craft/doms-color-12-small.webp", category: "art-drawing" },
+    { id: "art-002", name: "DOMS Color Pencils (12) Big", price: "₹60", image: "/images/products/art-craft/doms-color-12-big.webp", category: "art-drawing" },
+    { id: "art-003", name: "DOMS Color Pencils (24) Big", price: "₹120", image: "/images/products/art-craft/doms-color-24-big.webp", category: "art-drawing" },
+    { id: "art-004", name: "Camlin Color Pencils (12)", price: "₹45", image: "/images/products/art-craft/color-pencils-12.webp", category: "art-drawing" },
+    { id: "art-005", name: "Camlin Color Pencils (24)", price: "₹85", image: "/images/products/art-craft/color-pencils-24.webp", category: "art-drawing" },
+    
+    // Crayons
+    { id: "art-006", name: "DOMS Crayons (12)", price: "₹10", image: "/images/products/art-craft/doms-crayons-12.webp", category: "art-drawing" },
+    { id: "art-007", name: "DOMS Long Crayons (12)", price: "₹20", image: "/images/products/art-craft/doms-long-crayons-12.webp", category: "art-drawing" },
+    { id: "art-008", name: "Apsara Crayons (12)", price: "₹30", image: "/images/products/art-craft/apsara-crayons-12.webp", category: "art-drawing" },
+    { id: "art-009", name: "DOMS Oil Pastel", price: "₹50", image: "/images/products/art-craft/doms-oil-pastel.webp", category: "art-drawing" },
+    { id: "art-010", name: "Camel Crayons (12)", price: "₹30", image: "/images/products/art-craft/crayons-12.webp", category: "art-drawing" },
+    { id: "art-011", name: "Camel Crayons (24)", price: "₹55", image: "/images/products/art-craft/crayons-24.webp", category: "art-drawing" },
+    { id: "art-012", name: "Wax Crayons Jumbo", price: "₹40", image: "/images/products/art-craft/wax-jumbo.webp", category: "art-drawing" },
+    { id: "art-013", name: "Oil Pastels (12)", price: "₹50", image: "/images/products/art-craft/oil-pastel-12.webp", category: "art-drawing" },
+    { id: "art-014", name: "Oil Pastels (24)", price: "₹90", image: "/images/products/art-craft/oil-pastel-24.webp", category: "art-drawing" },
+    
+    // Painting Colors
+    { id: "art-015", name: "DOMS Water Colour Tubes", price: "₹40", image: "/images/products/art-craft/doms-watercolor-tubes.webp", category: "art-drawing" },
+    { id: "art-016", name: "DOMS Water Colour Cakes", price: "₹35", image: "/images/products/art-craft/doms-watercolor-cakes.webp", category: "art-drawing" },
+    { id: "art-017", name: "Fevicryl Acrylic Colours", price: "₹150", image: "/images/products/art-craft/fevicryl-acrylic.webp", category: "art-drawing" },
+    { id: "art-018", name: "Water Colors (12)", price: "₹35", image: "/images/products/art-craft/watercolor-12.webp", category: "art-drawing" },
+    { id: "art-019", name: "Poster Colors (6)", price: "₹60", image: "/images/products/art-craft/poster-6.webp", category: "art-drawing" },
+    { id: "art-020", name: "Acrylic Colors Set", price: "₹150", image: "/images/products/art-craft/acrylic-set.webp", category: "art-drawing" },
+    
+    // Art Supplies
+    { id: "art-021", name: "Paint Brushes (Set of 7)", price: "₹45", image: "/images/products/art-craft/brushes-set.webp", category: "art-drawing" },
+    { id: "art-022", name: "Color Mixing Palette", price: "₹20", image: "/images/products/art-craft/palette.webp", category: "art-drawing" },
+    { id: "art-023", name: "Canvas Board (Small)", price: "₹40", image: "/images/products/art-craft/canvas-small.webp", category: "art-drawing" },
+    { id: "art-024", name: "Canvas Board (Medium)", price: "₹70", image: "/images/products/art-craft/canvas-medium.webp", category: "art-drawing" },
+    { id: "art-025", name: "Craft Paper (Pack of 20)", price: "₹30", image: "/images/products/art-craft/craft-paper.webp", category: "art-drawing" },
+    { id: "art-026", name: "Glitter Sheets (10 colors)", price: "₹50", image: "/images/products/art-craft/glitter-sheets.webp", category: "art-drawing" },
+    { id: "art-027", name: "Chart Paper (Pack of 5)", price: "₹25", image: "/images/products/art-craft/chart-paper.webp", category: "art-drawing" },
+    { id: "art-028", name: "Origami Paper (100 sheets)", price: "₹35", image: "/images/products/art-craft/origami.webp", category: "art-drawing" },
+    { id: "art-029", name: "Craft Scissors (Decorative)", price: "₹60", image: "/images/products/art-craft/craft-scissors.webp", category: "art-drawing" },
   ],
   "school-essentials": [
     { id: "sch-001", name: "School Bag (Small)", price: "₹350", image: "/images/products/school-supplies/bag-small.webp", category: "school-essentials" },
