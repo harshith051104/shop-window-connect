@@ -13,6 +13,8 @@ import GiftsPage from "./pages/GiftsPage";
 import GiftCategoryPage from "./pages/GiftCategoryPage";
 import NotFound from "./pages/NotFound";
 
+import NameEntryDialog from "@/components/NameEntryDialog";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -22,6 +24,7 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
+          <NameEntryDialog />
           <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
             <Routes>
               <Route path="/" element={<Index />} />

@@ -57,7 +57,10 @@ const ItemCard = ({ item }: ItemCardProps) => {
 
   return (
     <>
-      <div className="bg-card rounded-xl border border-border overflow-hidden hover:shadow-md transition-all duration-300 group">
+      <div
+        className="bg-card rounded-xl border border-border overflow-hidden hover:shadow-md transition-all duration-300 group cursor-pointer"
+        onClick={handleOpenDialog}
+      >
         {/* Product Image */}
         <div className="relative">
           <OptimizedImage
@@ -88,7 +91,10 @@ const ItemCard = ({ item }: ItemCardProps) => {
           <Button
             variant={justAdded ? "default" : "outline"}
             size="sm"
-            onClick={handleOpenDialog}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleOpenDialog();
+            }}
             className="w-full transition-all"
           >
             {justAdded ? (
@@ -117,6 +123,14 @@ const ItemCard = ({ item }: ItemCardProps) => {
           </DialogHeader>
 
           <div className="space-y-4 py-4">
+            {/* Item Image */}
+            <OptimizedImage
+              src={item.image}
+              alt={item.name}
+              aspectRatio="auto"
+              className="w-full rounded-lg"
+            />
+
             {/* Quantity Selector */}
             <div>
               <label className="text-sm font-medium mb-2 block">
@@ -155,11 +169,10 @@ const ItemCard = ({ item }: ItemCardProps) => {
                     <button
                       key={color}
                       onClick={() => setSelectedColor(color)}
-                      className={`px-3 py-2 rounded-lg border text-sm font-medium transition-all ${
-                        selectedColor === color
-                          ? "border-primary bg-primary/10 text-primary"
-                          : "border-border hover:border-primary/50"
-                      }`}
+                      className={`px-3 py-2 rounded-lg border text-sm font-medium transition-all ${selectedColor === color
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-border hover:border-primary/50"
+                        }`}
                     >
                       {color}
                     </button>

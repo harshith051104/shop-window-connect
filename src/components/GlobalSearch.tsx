@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, X, Loader2 } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { fetchProducts, type ProductItem } from "@/services/sheetsApi";
+import { BookLoader } from "@/components/ui/BookLoader";
 
 const GlobalSearch = () => {
   const [query, setQuery] = useState("");
@@ -61,7 +62,7 @@ const GlobalSearch = () => {
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
     if (query.trim().length < 2) return;
-    
+
     // Navigate to items page with search query to show all matching products
     setIsOpen(false);
     navigate(`/items?search=${encodeURIComponent(query)}`);
@@ -99,7 +100,7 @@ const GlobalSearch = () => {
               className="absolute right-4 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
             >
               {loading ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
+                <BookLoader className="my-0 scale-[0.3] origin-center w-10" />
               ) : (
                 <X className="w-5 h-5" />
               )}
@@ -135,7 +136,7 @@ const GlobalSearch = () => {
               </div>
             </button>
           ))}
-          
+
           {/* View All Results */}
           <button
             onClick={handleViewAllResults}

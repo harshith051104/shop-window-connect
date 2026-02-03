@@ -19,13 +19,26 @@ export function CartProvider({ children }: { children: ReactNode }) {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
   }, [items]);
 
+  const [userName, setUserName] = useState<string | null>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("Nandi-stationery-user-name");
+    }
+    return null;
+  });
+
+  useEffect(() => {
+    if (userName) {
+      localStorage.setItem("Nandi-stationery-user-name", userName);
+    }
+  }, [userName]);
+
   const addItem = (newItem: Omit<CartItem, "quantity"> & { quantity?: number }) => {
     setItems((prevItems) => {
       const itemKey = `${newItem.id}-${newItem.color || 'default'}`;
       const existingItem = prevItems.find(
         (item) => item.id === newItem.id && item.color === newItem.color
       );
-      
+
       if (existingItem) {
         // Increase quantity if item with same color already exists
         return prevItems.map((item) =>
@@ -63,8 +76,20 @@ export function CartProvider({ children }: { children: ReactNode }) {
     return items.reduce((total, item) => total + item.quantity, 0);
   };
 
+  const getTotalPrice = () => {
+    return items.reduce((total, item) => {
+      // Remove non-numeric chars except period for potential decimals
+      // Assuming format like "₹50", "Rs. 50", "50/-"
+      const priceStr = item.price.replace(/[^\d.]/g, '');
+      const price = parseFloat(priceStr) || 0;
+      return total + (price * item.quantity);
+    }, 0);
+  };
+
   const getCartMessage = () => {
     if (items.length === 0) return "";
+
+    const userHeader = userName ? `Order from ${userName}` : "Order from Nandi Stationery";
 
     const itemsList = items
       .map((item) => {
@@ -73,7 +98,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
       })
       .join("\n");
 
-    return `🛒 *Order from Nandi Stationery*\n\n*Items:*\n${itemsList}\n\n📦 *Total Items:* ${getTotalItems()}\n\n✅ Please confirm availability and total price.\n\n🏪 I will pick up from shop.`;
+    const totalPrice = getTotalPrice();
+    const formattedTotal = `₹${totalPrice}`; // Assuming INR based on context
+
+    return `\uD83D\uDED2 *${userHeader}*\n\n*Items:*\n${itemsList}\n\n\uD83D\uDCE6 *Total Items:* ${getTotalItems()}\n\uD83D\uDCB0 *Total Price:* ${formattedTotal}\n\n\u2705 Please confirm availability.\n\n\uD83C\uDFEA I will pick up from shop.`;
   };
 
   return (
@@ -85,7 +113,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
         updateQuantity,
         clearCart,
         getTotalItems,
+        getTotalPrice,
         getCartMessage,
+        userName,
+        setUserName
       }}
     >
       {children}

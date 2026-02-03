@@ -19,7 +19,7 @@ export function getWhatsAppUrl(message: string): string {
 
 // Pre-filled messages for different scenarios
 export function getOrderMessage(items?: string): string {
-  const baseMessage = `🛒 *New Order Inquiry*\n\nHello! I would like to place an order.\n\n`;
+  const baseMessage = `\uD83D\uDED2 *New Order Inquiry*\n\nHello! I would like to place an order.\n\n`;
   if (items) {
     return baseMessage + `*Items:*\n${items}\n\nPlease confirm availability and total price.`;
   }
@@ -27,7 +27,7 @@ export function getOrderMessage(items?: string): string {
 }
 
 export function getRequestItemMessage(itemName: string, quantity?: string, urgency?: string): string {
-  let message = `📋 *Item Request*\n\nHello! I am looking for an item that may not be in your regular stock.\n\n`;
+  let message = `\uD83D\uDCCB *Item Request*\n\nHello! I am looking for an item that may not be in your regular stock.\n\n`;
   message += `*Item Name:* ${itemName}\n`;
   if (quantity) message += `*Quantity Needed:* ${quantity}\n`;
   if (urgency) message += `*Urgency:* ${urgency}\n`;
@@ -36,9 +36,9 @@ export function getRequestItemMessage(itemName: string, quantity?: string, urgen
 }
 
 export function getGeneralInquiryMessage(): string {
-  return `👋 Hello! I have a question about your stationery/gift items. Can you help me?`;
+  return `\uD83D\uDC4B Hello! I have a question about your stationery/gift items. Can you help me?`;
 }
 
 export function getBulkOrderMessage(): string {
-  return `📦 *Bulk Order Inquiry*\n\nHello! I am interested in placing a bulk order.\n\nPlease share details about:\n- Available items for bulk orders\n- Bulk pricing/discounts\n- Delivery options\n\nThank you!`;
+  return `\uD83D\uDCE6 *Bulk Order Inquiry*\n\nHello! I am interested in placing a bulk order.\n\nPlease share details about:\n- Available items for bulk orders\n- Bulk pricing/discounts\n- Delivery options\n\nThank you!`;
 }

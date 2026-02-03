@@ -15,5 +15,8 @@ export interface CartContextType {
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
   getTotalItems: () => number;
+  getTotalPrice: () => number;
   getCartMessage: () => string;
+  userName: string | null;
+  setUserName: (name: string) => void;
 }

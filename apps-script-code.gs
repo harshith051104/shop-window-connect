@@ -112,29 +112,37 @@ function debugSheet() {
 // PRODUCTS ENDPOINT
 // ============================================
 
+// Helper to sanitize input
+function sanitizeInput(input) {
+  if (typeof input !== 'string') return input;
+  return input.replace(/[<>]/g, '').trim().substring(0, 100); // Remove potential scripts, trim, limit length
+}
+
 function getProducts(params) {
-  const category = params.category || '';
+  // Sanitize all inputs
+  const category = sanitizeInput(params.category || '');
   const page = parseInt(params.page) || 1;
   const limit = Math.min(parseInt(params.limit) || CONFIG.DEFAULT_PAGE_SIZE, CONFIG.MAX_ITEMS_PER_PAGE);
-  const search = params.search || '';
+  const search = sanitizeInput(params.search || '');
   
-  // Generate cache key
+  // Cache key strategy: JSON.stringify(params) as recommended for simplicity and coverage
+  // But we need to be careful about parameter order. Manual construction is safer for cache hits.
+  // We'll stick to manual but using sanitized values.
   const cacheKey = `products_${category}_${page}_${limit}_${search}`;
+  
   const cached = CACHE.get(cacheKey);
   
   if (cached) {
-    Logger.log('Cache HIT: ' + cacheKey);
+    // Return cached JSON directly
     return JSON.parse(cached);
   }
-  
-  Logger.log('Cache MISS: ' + cacheKey);
   
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = ss.getSheetByName(CONFIG.PRODUCTS_SHEET);
   
   if (!sheet) {
     return {
-      error: 'Products sheet not found. Please create a sheet named "products"',
+      error: 'Products sheet not found',
       status: 404
     };
   }
@@ -151,10 +159,10 @@ function getProducts(params) {
     };
   }
   
-  // Store original headers for reference
-  const originalHeaders = data[0];
+  // ... rest of processing ...
   
-  // Parse headers (case-insensitive)
+  // (Existing logic for headers and processing)
+  const originalHeaders = data[0];
   const headers = data[0].map(h => String(h).trim().toLowerCase());
   const idIndex = headers.indexOf('id');
   const nameIndex = headers.indexOf('name');
@@ -164,28 +172,13 @@ function getProducts(params) {
   const stockIndex = headers.indexOf('in_stock');
   const colorsIndex = headers.indexOf('colors');
   
-  Logger.log('Headers found: ' + JSON.stringify(headers));
-  Logger.log('Category index: ' + categoryIndex);
-  Logger.log('Filter category param: [' + category + ']');
-  
-  // Convert to objects
   let products = [];
-  let debugCount = 0;
   for (let i = 1; i < data.length; i++) {
     const row = data[i];
-    
-    // Skip empty rows
     if (!row[idIndex]) continue;
     
-    // Get the category value from the row
     const rowCategory = String(row[categoryIndex] || '').trim().toLowerCase();
     const filterCategory = String(category || '').trim().toLowerCase();
-    
-    // Debug first few rows
-    if (debugCount < 3) {
-      Logger.log('Row ' + i + ' category raw: [' + row[categoryIndex] + '] normalized: [' + rowCategory + '] filter: [' + filterCategory + ']');
-      debugCount++;
-    }
     
     // Filter by category
     if (filterCategory && rowCategory !== filterCategory) {
@@ -210,7 +203,6 @@ function getProducts(params) {
     products.push(product);
   }
   
-  // Pagination
   const total = products.length;
   const totalPages = Math.ceil(total / limit);
   const start = (page - 1) * limit;
@@ -225,6 +217,7 @@ function getProducts(params) {
     totalPages: totalPages
   };
   
+  // Cache the response
   CACHE.put(cacheKey, JSON.stringify(response), CONFIG.CACHE_DURATION_MINUTES * 60);
   
   return response;

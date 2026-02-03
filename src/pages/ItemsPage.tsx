@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { ArrowRight, Loader2, AlertCircle } from "lucide-react";
+import { ArrowRight, AlertCircle } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import OptimizedImage from "@/components/OptimizedImage";
@@ -8,6 +8,7 @@ import FloatingCartButton from "@/components/FloatingCartButton";
 import { fetchCategories, fetchProducts, type Category, type ProductItem } from "@/services/sheetsApi";
 import { useTranslation, useLanguage } from "@/hooks/useLanguage";
 import ItemCard from "@/components/ItemCard";
+import { BookLoader } from "@/components/ui/BookLoader";
 
 const ItemsPage = () => {
   const { t } = useTranslation();
@@ -70,9 +71,9 @@ const ItemsPage = () => {
               {searchQuery ? `Search Results for "${searchQuery}"` : t("browseCategories")}
             </h1>
             <p className="text-muted-foreground max-w-lg mx-auto">
-              {searchQuery 
+              {searchQuery
                 ? `Found ${products.length} product${products.length !== 1 ? 's' : ''} matching "${searchQuery}"`
-                : (language === "te" 
+                : (language === "te"
                   ? "మా పూర్తి స్టేషనరీ వస్తువుల సేకరణను బ్రౌజ్ చేయండి. అందుబాటులో ఉన్న అన్ని ఉత్పత్తులను చూడటానికి వర్గంపై క్లిక్ చేయండి."
                   : "Browse our complete collection of stationery items. Click on a category to see all available products.")}
             </p>
@@ -84,9 +85,9 @@ const ItemsPage = () => {
           <div className="container">
             {/* Loading State */}
             {loading && (
-              <div className="flex items-center justify-center py-20">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-                <span className="ml-3 text-muted-foreground">Loading categories...</span>
+              <div className="flex flex-col items-center justify-center py-20">
+                <BookLoader />
+                <span className="mt-4 text-muted-foreground">Loading categories...</span>
               </div>
             )}
 
@@ -131,41 +132,41 @@ const ItemsPage = () => {
             {!loading && !error && !searchQuery && (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
                 {categories.map((category) => (
-                <Link
-                  key={category.id}
-                  to={`/category/${category.slug}`}
-                  className="group"
-                >
-                  <div className="bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
-                    {/* Category Image */}
-                    <div className="relative overflow-hidden">
-                      <OptimizedImage
-                        src={category.image}
-                        alt={category.name}
-                        aspectRatio="video"
-                        className="group-hover:scale-105 transition-transform duration-300"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                      <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
-                        <h3 className="text-lg sm:text-xl font-bold text-white mb-1">
-                          {category.name}
-                        </h3>
-                        <p className="text-white/80 text-xs sm:text-sm">
-                          {category.itemCount}+ {t("itemsCount")}
+                  <Link
+                    key={category.id}
+                    to={`/category/${category.slug}`}
+                    className="group"
+                  >
+                    <div className="bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
+                      {/* Category Image */}
+                      <div className="relative overflow-hidden">
+                        <OptimizedImage
+                          src={category.image}
+                          alt={category.name}
+                          aspectRatio="video"
+                          className="group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                        <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
+                          <h3 className="text-lg sm:text-xl font-bold text-white mb-1">
+                            {category.name}
+                          </h3>
+                          <p className="text-white/80 text-xs sm:text-sm">
+                            {category.itemCount}+ {t("itemsCount")}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Category Footer */}
+                      <div className="p-3 sm:p-4 flex items-center justify-between mt-auto">
+                        <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">
+                          {category.description}
                         </p>
+                        <ArrowRight className="w-5 h-5 text-primary group-hover:translate-x-1 transition-transform flex-shrink-0 ml-2" />
                       </div>
                     </div>
-
-                    {/* Category Footer */}
-                    <div className="p-3 sm:p-4 flex items-center justify-between mt-auto">
-                      <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">
-                        {category.description}
-                      </p>
-                      <ArrowRight className="w-5 h-5 text-primary group-hover:translate-x-1 transition-transform flex-shrink-0 ml-2" />
-                    </div>
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                ))}
               </div>
             )}
           </div>

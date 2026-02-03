@@ -10,13 +10,14 @@ import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { getCartMessageBilingual } from "@/lib/translations";
 
 const CartPage = () => {
-  const { items, removeItem, updateQuantity, clearCart, getTotalItems } = useCart();
+  const { items, removeItem, updateQuantity, clearCart, getTotalItems, getTotalPrice, getCartMessage } = useCart();
   const { t } = useTranslation();
   const { language } = useLanguage();
 
   const handlePlaceOrder = () => {
-    const message = getCartMessageBilingual(items, getTotalItems(), language);
+    const message = getCartMessage();
     window.open(getWhatsAppUrl(message), "_blank");
+    clearCart();
   };
 
   if (items.length === 0) {
@@ -168,9 +169,15 @@ const CartPage = () => {
                     {items.map((item) => (
                       <div key={item.id} className="flex justify-between text-xs sm:text-sm">
                         <span className="text-muted-foreground truncate flex-1 mr-2">
-                          {item.name}
+                          {item.name} <span className="text-xs opacity-70">x {item.quantity}</span>
                         </span>
-                        <span className="font-medium">×{item.quantity}</span>
+                        <span className="font-medium">
+                          {/* Calculate approx line total if price is numeric-ish */}
+                          {(() => {
+                            const priceNum = parseFloat(item.price.replace(/[^\d.]/g, '')) || 0;
+                            return `₹${priceNum * item.quantity}`;
+                          })()}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -178,17 +185,23 @@ const CartPage = () => {
                   <hr className="my-4 border-border" />
 
                   {/* Total */}
-                  <div className="flex justify-between items-center mb-4 sm:mb-6">
-                    <span className="font-semibold text-sm sm:text-base">{t("totalItems")}</span>
-                    <span className="text-lg sm:text-xl font-bold text-primary">
-                      {getTotalItems()}
-                    </span>
+                  <div className="space-y-2 mb-4 sm:mb-6">
+                    <div className="flex justify-between items-center text-sm text-muted-foreground">
+                      <span>{t("totalItems")}</span>
+                      <span>{getTotalItems()}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="font-bold text-base sm:text-lg">{language === "te" ? "మొత్తం ధర" : "Total Price"}</span>
+                      <span className="text-lg sm:text-xl font-bold text-primary">
+                        ₹{getTotalPrice()}
+                      </span>
+                    </div>
                   </div>
 
                   {/* Note */}
                   <div className="bg-secondary/50 rounded-lg p-2.5 sm:p-3 mb-4 text-xs text-muted-foreground">
                     <p>
-                      {language === "te" 
+                      {language === "te"
                         ? "💡 దుకాణం ద్వారా తుది ధర నిర్ధారించబడుతుంది. ధర బ్రాండ్ మరియు అందుబాటుపై ఆధారపడి ఉంటుంది."
                         : "💡 Final price will be confirmed by the shop. Price depends on brand and availability."}
                     </p>
@@ -205,7 +218,7 @@ const CartPage = () => {
                   </Button>
 
                   <p className="text-xs text-center text-muted-foreground mt-3">
-                    {language === "te" 
+                    {language === "te"
                       ? "📍 నిర్ధారణ తర్వాత దుకాణం నుండి తీసుకోండి"
                       : "📍 Pick up from shop after confirmation"}
                   </p>

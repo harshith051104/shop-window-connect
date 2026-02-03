@@ -1,6 +1,6 @@
 import { useParams, Link, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { ArrowLeft, ShoppingCart, Loader2, AlertCircle, Search } from "lucide-react";
+import { ArrowLeft, ShoppingCart, AlertCircle, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Header from "@/components/Header";
@@ -9,17 +9,18 @@ import ItemCard from "@/components/ItemCard";
 import FloatingCartButton from "@/components/FloatingCartButton";
 import { fetchCategories, fetchProducts, clearApiCache, type Category, type ProductItem } from "@/services/sheetsApi";
 import { useTranslation } from "@/hooks/useLanguage";
+import { BookLoader } from "@/components/ui/BookLoader";
 
 const CategoryPage = () => {
   const { t } = useTranslation();
   const { slug } = useParams<{ slug: string }>();
   const [searchParams] = useSearchParams();
-  
+
   // Clear API cache on mount to ensure fresh data
   useEffect(() => {
     clearApiCache();
   }, []);
-  
+
   const [category, setCategory] = useState<Category | null>(null);
   const [products, setProducts] = useState<ProductItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -47,23 +48,23 @@ const CategoryPage = () => {
     try {
       setLoading(true);
       setError(null);
-      
+
       console.log('🔍 Loading category:', slug);
-      
+
       // Fetch categories to find current category
       const categories = await fetchCategories();
       console.log('📂 Categories loaded:', categories.length, categories.map(c => c.slug));
-      
+
       const foundCategory = categories.find(cat => cat.slug === slug);
       console.log('🎯 Found category:', foundCategory);
       setCategory(foundCategory || null);
-      
+
       if (!foundCategory) {
         console.warn('⚠️ Category not found for slug:', slug);
         setLoading(false);
         return;
       }
-      
+
       // Fetch products for this category
       console.log('📦 Fetching products for category:', slug);
       const response = await fetchProducts(
@@ -72,10 +73,10 @@ const CategoryPage = () => {
         ITEMS_PER_PAGE,
         searchQuery
       );
-      
+
       console.log('📦 Products response:', response);
       console.log('📦 Products count:', response.data?.length, 'Total:', response.totalItems);
-      
+
       setProducts(response.data);
       setTotalPages(response.totalPages);
       setTotalItems(response.totalItems);
@@ -96,6 +97,21 @@ const CategoryPage = () => {
     e.preventDefault();
     setCurrentPage(1); // Reset to first page on search
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col bg-background">
+        <Header />
+        <main className="flex-1 flex items-center justify-center">
+          <div className="flex flex-col items-center">
+            <BookLoader />
+            <p className="text-muted-foreground mt-4">Loading category...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!category) {
     return (
@@ -159,7 +175,7 @@ const CategoryPage = () => {
                   </Button>
                 </Link>
               </div>
-              
+
               {/* Search Bar */}
               <form onSubmit={handleSearch} className="flex gap-2 max-w-md">
                 <div className="relative flex-1">
@@ -185,8 +201,8 @@ const CategoryPage = () => {
           <div className="container">
             {loading ? (
               <div className="flex flex-col items-center justify-center py-16">
-                <Loader2 className="w-12 h-12 animate-spin text-primary mb-4" />
-                <p className="text-muted-foreground">Loading products...</p>
+                <BookLoader />
+                <p className="text-muted-foreground mt-4">Loading products...</p>
               </div>
             ) : error ? (
               <div className="flex flex-col items-center justify-center py-16">
@@ -211,14 +227,14 @@ const CategoryPage = () => {
                 <div className="mb-4 text-sm text-muted-foreground">
                   Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1} - {Math.min(currentPage * ITEMS_PER_PAGE, totalItems)} of {totalItems} products
                 </div>
-                
+
                 {/* Products Grid */}
                 <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5">
                   {products.map((item) => (
                     <ItemCard key={item.id} item={item} />
                   ))}
                 </div>
-                
+
                 {/* Pagination */}
                 {totalPages > 1 && (
                   <div className="mt-8 flex items-center justify-center gap-2 flex-wrap">
@@ -230,7 +246,7 @@ const CategoryPage = () => {
                     >
                       Previous
                     </Button>
-                    
+
                     {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                       let pageNum;
                       if (totalPages <= 5) {
@@ -242,7 +258,7 @@ const CategoryPage = () => {
                       } else {
                         pageNum = currentPage - 2 + i;
                       }
-                      
+
                       return (
                         <Button
                           key={pageNum}
@@ -254,7 +270,7 @@ const CategoryPage = () => {
                         </Button>
                       );
                     })}
-                    
+
                     <Button
                       variant="outline"
                       size="sm"

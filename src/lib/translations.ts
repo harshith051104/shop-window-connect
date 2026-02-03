@@ -42,9 +42,9 @@ export const translations = {
 
   // ===== HEADINGS =====
   welcomeTitle: { en: "Nandi Stationery", te: "నంది స్టేషనరీ" },
-  welcomeSubtitle: { 
-    en: "Your One-Stop Shop for Quality Stationery", 
-    te: "నాణ్యమైన స్టేషనరీ కోసం మీ ఏకైక దుకాణం" 
+  welcomeSubtitle: {
+    en: "Your One-Stop Shop for Quality Stationery",
+    te: "నాణ్యమైన స్టేషనరీ కోసం మీ ఏకైక దుకాణం"
   },
   ourProducts: { en: "Our Products", te: "మా ఉత్పత్తులు" },
   giftItems: { en: "Gift Items", te: "బహుమతి వస్తువులు" },
@@ -55,9 +55,9 @@ export const translations = {
   orderSummary: { en: "Order Summary", te: "ఆర్డర్ సారాంశం" },
   contactUs: { en: "Contact Us", te: "మమ్మల్ని సంప్రదించండి" },
   requestItem: { en: "Request an Item", te: "వస్తువు కోరండి" },
-  perfectGifts: { 
-    en: "Perfect Gifts for Every Occasion", 
-    te: "ప్రతి సందర్భానికి సరిపడే బహుమతులు" 
+  perfectGifts: {
+    en: "Perfect Gifts for Every Occasion",
+    te: "ప్రతి సందర్భానికి సరిపడే బహుమతులు"
   },
   needBulkOrders: { en: "Need Bulk Orders?", te: "బల్క్ ఆర్డర్లు కావాలా?" },
   bulkPricingGuide: { en: "Bulk Pricing Guide", te: "బల్క్ ధరల గైడ్" },
@@ -90,33 +90,33 @@ export const translations = {
   optional: { en: "optional", te: "ఐచ్ఛికం" },
 
   // ===== INSTRUCTIONS =====
-  pickupInfo: { 
-    en: "📍 Pickup from shop only • No home delivery", 
-    te: "📍 దుకాణం నుండి మాత్రమే తీసుకోండి • హోమ్ డెలివరీ లేదు" 
+  pickupInfo: {
+    en: "📍 Pickup from shop only • No home delivery",
+    te: "📍 దుకాణం నుండి మాత్రమే తీసుకోండి • హోమ్ డెలివరీ లేదు"
   },
   whatsappOrderSteps: {
     en: "Add items to cart → Click 'Place Order' → Message sent to WhatsApp → We'll confirm availability",
     te: "కార్ట్‌కు వస్తువులు జోడించండి → 'ఆర్డర్ చేయండి' క్లిక్ చేయండి → WhatsAppకు మెసేజ్ వెళ్తుంది → మేము అందుబాటును నిర్ధారిస్తాము"
   },
-  bulkOrderInfo: { 
+  bulkOrderInfo: {
     en: "Planning a birthday party, school event, or corporate gifting? We offer special prices for bulk orders!",
     te: "పుట్టినరోజు పార్టీ, స్కూల్ ఈవెంట్, లేదా కార్పొరేట్ గిఫ్టింగ్ ప్లాన్ చేస్తున్నారా? బల్క్ ఆర్డర్లకు ప్రత్యేక ధరలు!"
   },
-  emptyCartMessage: { 
-    en: "Your cart is empty", 
-    te: "మీ కార్ట్ ఖాళీగా ఉంది" 
+  emptyCartMessage: {
+    en: "Your cart is empty",
+    te: "మీ కార్ట్ ఖాళీగా ఉంది"
   },
-  emptyCartSubtext: { 
-    en: "Add some items to get started!", 
-    te: "ప్రారంభించడానికి కొన్ని వస్తువులు జోడించండి!" 
+  emptyCartSubtext: {
+    en: "Add some items to get started!",
+    te: "ప్రారంభించడానికి కొన్ని వస్తువులు జోడించండి!"
   },
-  confirmAvailability: { 
-    en: "Please confirm availability and total price.", 
-    te: "దయచేసి అందుబాటు మరియు మొత్తం ధరను నిర్ధారించండి." 
+  confirmAvailability: {
+    en: "Please confirm availability and total price.",
+    te: "దయచేసి అందుబాటు మరియు మొత్తం ధరను నిర్ధారించండి."
   },
-  willPickup: { 
-    en: "I will pick up from shop.", 
-    te: "నేను దుకాణం నుండి తీసుకుంటాను." 
+  willPickup: {
+    en: "I will pick up from shop.",
+    te: "నేను దుకాణం నుండి తీసుకుంటాను."
   },
   productsDesc: {
     en: "From school students to office professionals — we have quality products at budget-friendly prices",
@@ -201,24 +201,24 @@ export const translations = {
   customHampers: { en: "Custom Hampers", te: "కస్టమ్ హంపర్లు" },
   customHampersDesc: { en: "Create your own gift set", te: "మీ స్వంత గిఫ్ట్ సెట్ తయారు చేయండి" },
   birthdayReturnGifts: { en: "Birthday Return Gifts", te: "పుట్టినరోజు రిటర్న్ గిఫ్ట్స్" },
-  birthdayReturnGiftsDesc: { 
-    en: "Ready-made packs for kids' birthday parties. Stationery sets, small toys, chocolates bundled beautifully.", 
-    te: "పిల్లల పుట్టినరోజు పార్టీల కోసం రెడీమేడ్ ప్యాక్‌లు. స్టేషనరీ సెట్లు, చిన్న బొమ్మలు, చాక్లెట్లు అందంగా బండిల్ చేయబడ్డాయి." 
+  birthdayReturnGiftsDesc: {
+    en: "Ready-made packs for kids' birthday parties. Stationery sets, small toys, chocolates bundled beautifully.",
+    te: "పిల్లల పుట్టినరోజు పార్టీల కోసం రెడీమేడ్ ప్యాక్‌లు. స్టేషనరీ సెట్లు, చిన్న బొమ్మలు, చాక్లెట్లు అందంగా బండిల్ చేయబడ్డాయి."
   },
   weddingReturnGifts: { en: "Wedding Return Gifts", te: "వెడ్డింగ్ రిటర్న్ గిఫ్ట్స్" },
-  weddingReturnGiftsDesc: { 
-    en: "Elegant gift packing for wedding ceremonies. Diyas, containers, dry fruit boxes, and more.", 
-    te: "వివాహ వేడుకలకు ఎలిగెంట్ గిఫ్ట్ ప్యాకింగ్. దీపాలు, కంటైనర్లు, డ్రై ఫ్రూట్ బాక్స్‌లు మరియు మరిన్ని." 
+  weddingReturnGiftsDesc: {
+    en: "Elegant gift packing for wedding ceremonies. Diyas, containers, dry fruit boxes, and more.",
+    te: "వివాహ వేడుకలకు ఎలిగెంట్ గిఫ్ట్ ప్యాకింగ్. దీపాలు, కంటైనర్లు, డ్రై ఫ్రూట్ బాక్స్‌లు మరియు మరిన్ని."
   },
   schoolEventGifts: { en: "School Event Gifts", te: "స్కూల్ ఈవెంట్ గిఫ్ట్స్" },
-  schoolEventGiftsDesc: { 
-    en: "Prizes for competitions, sports day, annual functions. Customized based on your budget.", 
-    te: "పోటీలు, స్పోర్ట్స్ డే, వార్షిక ఉత్సవాలకు బహుమతులు. మీ బడ్జెట్ ఆధారంగా అనుకూలీకరించబడింది." 
+  schoolEventGiftsDesc: {
+    en: "Prizes for competitions, sports day, annual functions. Customized based on your budget.",
+    te: "పోటీలు, స్పోర్ట్స్ డే, వార్షిక ఉత్సవాలకు బహుమతులు. మీ బడ్జెట్ ఆధారంగా అనుకూలీకరించబడింది."
   },
   customGiftPacking: { en: "Custom Gift Packing", te: "కస్టమ్ గిఫ్ట్ ప్యాకింగ్" },
-  customGiftPackingDesc: { 
-    en: "Bring your items, we'll pack them beautifully! Ribbons, thermocol, decorative paper included.", 
-    te: "మీ వస్తువులను తీసుకురండి, మేము వాటిని అందంగా ప్యాక్ చేస్తాము! రిబ్బన్లు, థర్మోకోల్, అలంకార కాగితం చేర్చబడ్డాయి." 
+  customGiftPackingDesc: {
+    en: "Bring your items, we'll pack them beautifully! Ribbons, thermocol, decorative paper included.",
+    te: "మీ వస్తువులను తీసుకురండి, మేము వాటిని అందంగా ప్యాక్ చేస్తాము! రిబ్బన్లు, థర్మోకోల్, అలంకార కాగితం చేర్చబడ్డాయి."
   },
   perPack: { en: "per pack", te: "ప్రతి ప్యాక్" },
   perItem: { en: "per item", te: "ప్రతి వస్తువు" },
@@ -291,8 +291,8 @@ export function getCartMessageBilingual(
     .join("\n");
 
   if (lang === "te") {
-    return `🛒 *నంది స్టేషనరీ నుండి ఆర్డర్*\n*Order from Nandi Stationery*\n\n*వస్తువులు / Items:*\n${itemsList}\n\n📦 *మొత్తం వస్తువులు / Total Items:* ${totalItems}\n\n✅ దయచేసి అందుబాటు మరియు ధరను నిర్ధారించండి.\nPlease confirm availability and price.\n\n🏪 నేను దుకాణం నుండి తీసుకుంటాను.\nI will pick up from shop.`;
+    return `\uD83D\uDED2 *నంది స్టేషనరీ నుండి ఆర్డర్*\n*Order from Nandi Stationery*\n\n*వస్తువులు / Items:*\n${itemsList}\n\n\uD83D\uDCE6 *మొత్తం వస్తువులు / Total Items:* ${totalItems}\n\n\u2705 దయచేసి అందుబాటు మరియు ధరను నిర్ధారించండి.\nPlease confirm availability and price.\n\n\uD83C\uDFEA నేను దుకాణం నుండి తీసుకుంటాను.\nI will pick up from shop.`;
   }
 
-  return `🛒 *Order from Nandi Stationery*\n\n*Items:*\n${itemsList}\n\n📦 *Total Items:* ${totalItems}\n\n✅ Please confirm availability and total price.\n\n🏪 I will pick up from shop.`;
+  return `\uD83D\uDED2 *Order from Nandi Stationery*\n\n*Items:*\n${itemsList}\n\n\uD83D\uDCE6 *Total Items:* ${totalItems}\n\n\u2705 Please confirm availability and total price.\n\n\uD83C\uDFEA I will pick up from shop.`;
 }
