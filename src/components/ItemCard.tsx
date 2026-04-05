@@ -10,8 +10,8 @@ import {
 import OptimizedImage from "@/components/OptimizedImage";
 import { useCart } from "@/hooks/useCart";
 import { useTranslation } from "@/hooks/useLanguage";
-import { ProductItem } from "@/data/products";
-import { useState } from "react";
+import { ProductItem, ProductVariant } from "@/services/sheetsApi";
+import { useState, useEffect } from "react";
 
 interface ItemCardProps {
   item: ProductItem;
@@ -24,18 +24,40 @@ const ItemCard = ({ item }: ItemCardProps) => {
   const [showDialog, setShowDialog] = useState(false);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState(item.colors?.[0] || "");
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
 
-  const cartItem = items.find((i) => i.id === item.id);
+  // Default to first variant on load — no name-based assumptions
+  useEffect(() => {
+    if (item.variants && item.variants.length > 0) {
+      setSelectedVariant(item.variants[0]);
+    } else {
+      setSelectedVariant(null);
+    }
+  }, [item]);
+
+  // Reset color when item changes
+  useEffect(() => {
+    setSelectedColor(item.colors?.[0] || "");
+  }, [item]);
+
+  // Effective values derive entirely from selected variant or item — no hardcoding
+  const effectiveId    = selectedVariant ? selectedVariant.id    : item.id;
+  const effectivePrice = selectedVariant ? selectedVariant.price : item.price;
+  const effectiveName  = selectedVariant
+    ? `${item.name} (${selectedVariant.name})`
+    : item.name;
+
+  const cartItem       = items.find((i) => i.id === effectiveId);
   const quantityInCart = cartItem?.quantity || 0;
 
   const handleAddToCart = () => {
     addItem({
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      image: item.image,
+      id:       effectiveId,
+      name:     effectiveName,
+      price:    effectivePrice,
+      image:    item.image,
       category: item.category,
-      color: selectedColor || undefined,
+      color:    selectedColor || undefined,
       quantity: selectedQuantity,
     });
     setJustAdded(true);
@@ -47,13 +69,39 @@ const ItemCard = ({ item }: ItemCardProps) => {
   const handleOpenDialog = () => {
     setSelectedQuantity(1);
     setSelectedColor(item.colors?.[0] || "");
+    // Keep the previously selected variant (or default first variant)
     setShowDialog(true);
   };
 
-  const incrementQuantity = () => setSelectedQuantity(prev => prev + 1);
-  const decrementQuantity = () => setSelectedQuantity(prev => Math.max(1, prev - 1));
+  const incrementQuantity = () => setSelectedQuantity((prev) => prev + 1);
+  const decrementQuantity = () => setSelectedQuantity((prev) => Math.max(1, prev - 1));
 
-  const inCartLabel = language === "te" ? `${quantityInCart} కార్ట్‌లో` : `${quantityInCart} in cart`;
+  const inCartLabel =
+    language === "te"
+      ? `${quantityInCart} కార్ట్‌లో`
+      : `${quantityInCart} in cart`;
+
+  // Variant label — driven entirely by variantType from the API (set from spreadsheet column)
+  const getVariantLabel = (): string => {
+    if (!item.variants || item.variants.length === 0) return "";
+
+    if (item.variantType) {
+      const labels: Record<string, { en: string; te: string }> = {
+        pages:    { en: "Pages",    te: "పేజీలు"   },
+        size:     { en: "Size",     te: "సైజు"     },
+        quantity: { en: "Quantity", te: "పరిమాణం"  },
+        price:    { en: "Price",    te: "ధర ఎంపిక" },
+      };
+
+      const label = labels[item.variantType];
+      if (label) return language === "te" ? label.te : label.en;
+    }
+
+    // Generic fallback — still not hardcoded to any specific product type
+    return language === "te" ? "ఎంపిక" : "Option";
+  };
+
+  const variantLabel = getVariantLabel();
 
   return (
     <>
@@ -82,12 +130,12 @@ const ItemCard = ({ item }: ItemCardProps) => {
             {item.name}
           </h3>
 
-          {/* Price */}
+          {/* Price — priceRange comes from API if multi-variant, otherwise single price */}
           <div className="text-primary font-bold text-base sm:text-lg mb-3">
-            {item.price}
+            {item.priceRange || item.price}
           </div>
 
-          {/* Add to Cart button */}
+          {/* Add to Cart Button */}
           <Button
             variant={justAdded ? "default" : "outline"}
             size="sm"
@@ -112,13 +160,13 @@ const ItemCard = ({ item }: ItemCardProps) => {
         </div>
       </div>
 
-      {/* Add to Cart Dialog */}
+      {/* Product Detail Dialog */}
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>{item.name}</DialogTitle>
             <DialogDescription className="text-primary font-bold text-lg">
-              {item.price}
+              {effectivePrice}
             </DialogDescription>
           </DialogHeader>
 
@@ -130,6 +178,35 @@ const ItemCard = ({ item }: ItemCardProps) => {
               aspectRatio="auto"
               className="w-full rounded-lg"
             />
+
+            {/* Variant Selector — rendered only when API returns variants */}
+            {item.variants && item.variants.length > 0 && (
+              <div>
+                <label className="text-sm font-medium mb-2 block">
+                  {variantLabel}
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {item.variants.map((variant) => (
+                    <button
+                      key={variant.id}
+                      onClick={() => setSelectedVariant(variant)}
+                      className={`px-3 py-2 rounded-lg border text-sm font-medium transition-all ${
+                        selectedVariant?.id === variant.id
+                          ? "border-primary bg-primary/10 text-primary"
+                          : "border-border hover:border-primary/50"
+                      }`}
+                    >
+                      <div className="flex flex-col items-center">
+                        <span>{variant.name}</span>
+                        <span className="text-xs text-primary font-bold mt-1">
+                          {variant.price}
+                        </span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Quantity Selector */}
             <div>
@@ -148,17 +225,13 @@ const ItemCard = ({ item }: ItemCardProps) => {
                 <span className="text-xl font-semibold min-w-[3rem] text-center">
                   {selectedQuantity}
                 </span>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={incrementQuantity}
-                >
+                <Button variant="outline" size="icon" onClick={incrementQuantity}>
                   <Plus className="w-4 h-4" />
                 </Button>
               </div>
             </div>
 
-            {/* Color Selector */}
+            {/* Color Selector — rendered only when API returns colors */}
             {item.colors && item.colors.length > 0 && (
               <div>
                 <label className="text-sm font-medium mb-2 block">
@@ -169,10 +242,11 @@ const ItemCard = ({ item }: ItemCardProps) => {
                     <button
                       key={color}
                       onClick={() => setSelectedColor(color)}
-                      className={`px-3 py-2 rounded-lg border text-sm font-medium transition-all ${selectedColor === color
-                        ? "border-primary bg-primary/10 text-primary"
-                        : "border-border hover:border-primary/50"
-                        }`}
+                      className={`px-3 py-2 rounded-lg border text-sm font-medium transition-all ${
+                        selectedColor === color
+                          ? "border-primary bg-primary/10 text-primary"
+                          : "border-border hover:border-primary/50"
+                      }`}
                     >
                       {color}
                     </button>
@@ -183,11 +257,7 @@ const ItemCard = ({ item }: ItemCardProps) => {
           </div>
 
           {/* Add to Cart Button */}
-          <Button
-            onClick={handleAddToCart}
-            className="w-full"
-            size="lg"
-          >
+          <Button onClick={handleAddToCart} className="w-full" size="lg">
             <Plus className="w-5 h-5 mr-2" />
             {language === "te" ? "కార్ట్‌కు జోడించండి" : "Add to Cart"}
           </Button>

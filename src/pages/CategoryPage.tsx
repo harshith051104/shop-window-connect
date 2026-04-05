@@ -10,6 +10,20 @@ import FloatingCartButton from "@/components/FloatingCartButton";
 import { fetchCategories, fetchProducts, clearApiCache, type Category, type ProductItem } from "@/services/sheetsApi";
 import { useTranslation } from "@/hooks/useLanguage";
 import { BookLoader } from "@/components/ui/BookLoader";
+import { cn } from "@/lib/utils";
+
+// Subcategory Configuration (slug -> list of subcategories)
+const SUBCATEGORIES: Record<string, string[]> = {
+  'pens': ['All', 'Ball Pens', 'Gel Pens', 'Ink Pens'],
+  // Add other categories here if needed
+};
+
+// Map display names to API slugs
+const SUBCATEGORY_SLUGS: Record<string, string> = {
+  'Ball Pens': 'ball',
+  'Gel Pens': 'gel',
+  'Ink Pens': 'ink',
+};
 
 const CategoryPage = () => {
   const { t } = useTranslation();
@@ -23,6 +37,7 @@ const CategoryPage = () => {
 
   const [category, setCategory] = useState<Category | null>(null);
   const [products, setProducts] = useState<ProductItem[]>([]);
+  const [activeSubcategory, setActiveSubcategory] = useState("All");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -42,40 +57,37 @@ const CategoryPage = () => {
   // Load category and products
   useEffect(() => {
     loadCategoryAndProducts();
-  }, [slug, currentPage, searchQuery]);
+  }, [slug, currentPage, searchQuery, activeSubcategory]);
 
   async function loadCategoryAndProducts() {
     try {
       setLoading(true);
       setError(null);
 
-      console.log('🔍 Loading category:', slug);
-
       // Fetch categories to find current category
       const categories = await fetchCategories();
-      console.log('📂 Categories loaded:', categories.length, categories.map(c => c.slug));
-
       const foundCategory = categories.find(cat => cat.slug === slug);
-      console.log('🎯 Found category:', foundCategory);
       setCategory(foundCategory || null);
 
       if (!foundCategory) {
-        console.warn('⚠️ Category not found for slug:', slug);
         setLoading(false);
         return;
       }
 
+      // Determine subcategory slug
+      let subcategoryParam = '';
+      if (activeSubcategory !== 'All') {
+        subcategoryParam = SUBCATEGORY_SLUGS[activeSubcategory] || '';
+      }
+
       // Fetch products for this category
-      console.log('📦 Fetching products for category:', slug);
       const response = await fetchProducts(
         slug || "",
         currentPage,
         ITEMS_PER_PAGE,
-        searchQuery
+        searchQuery,
+        subcategoryParam
       );
-
-      console.log('📦 Products response:', response);
-      console.log('📦 Products count:', response.data?.length, 'Total:', response.totalItems);
 
       setProducts(response.data);
       setTotalPages(response.totalPages);
@@ -91,6 +103,11 @@ const CategoryPage = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleSubcategoryChange = (sub: string) => {
+    setActiveSubcategory(sub);
+    setCurrentPage(1); // Reset to first page
   };
 
   const handleSearch = (e: React.FormEvent) => {
@@ -135,6 +152,9 @@ const CategoryPage = () => {
       </div>
     );
   }
+
+  // Check if current category has subcategories
+  const currentSubcategories = slug ? SUBCATEGORIES[slug] : undefined;
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -193,6 +213,26 @@ const CategoryPage = () => {
                 </Button>
               </form>
             </div>
+
+            {/* Subcategory Tabs */}
+            {currentSubcategories && (
+              <div className="flex gap-2 mt-6 overflow-x-auto pb-2 scrollbar-hide">
+                {currentSubcategories.map((sub) => (
+                  <button
+                    key={sub}
+                    onClick={() => handleSubcategoryChange(sub)}
+                    className={cn(
+                      "px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors border",
+                      activeSubcategory === sub
+                        ? "bg-primary text-primary-foreground border-primary"
+                        : "bg-background text-muted-foreground border-border hover:bg-secondary/50"
+                    )}
+                  >
+                    {sub}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
@@ -218,8 +258,15 @@ const CategoryPage = () => {
                 <ShoppingCart className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
                 <h2 className="text-xl font-semibold mb-2">{t("noItemsFound")}</h2>
                 <p className="text-muted-foreground">
-                  {searchQuery ? 'No products match your search.' : t("itemsWillBeAddedSoon")}
+                  {searchQuery || activeSubcategory !== "All"
+                    ? `No products found matching ${activeSubcategory !== "All" ? `"${activeSubcategory}"` : 'your search'}.`
+                    : t("itemsWillBeAddedSoon")}
                 </p>
+                {activeSubcategory !== "All" && (
+                  <Button variant="link" onClick={() => handleSubcategoryChange("All")}>
+                    View all items in this category
+                  </Button>
+                )}
               </div>
             ) : (
               <>

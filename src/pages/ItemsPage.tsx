@@ -46,7 +46,7 @@ const ItemsPage = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetchProducts("", 1, 100, searchQuery || "");
+      const response = await fetchProducts("", 1, 50, searchQuery || "");
       setProducts(response.data);
     } catch (err) {
       console.error('Error loading search results:', err);
